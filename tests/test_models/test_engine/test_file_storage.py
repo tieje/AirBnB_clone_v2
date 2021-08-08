@@ -107,3 +107,11 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+'''
+    def test_do_create(self):
+        from console import do_create
+        self.classes = {'Place': Place, }
+        line = """Place city_id = "0001" user_id = "0001" name = "My_little_house" number_rooms = 4 number_bathrooms = 2 max_guest = 10 price_by_night = 300 latitude = 37.773972 longitude = -122.431297"""
+        do_create(line)
+        
+'''
