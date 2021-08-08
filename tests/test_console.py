@@ -17,8 +17,10 @@ import unittest
 import sys
 import os
 
+
 class TestConsole(unittest.TestCase):
     """ Test Console. """
+
     def setUp(self):
         """Set up """
         self.console_o = HBNBCommand()
