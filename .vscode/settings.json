@@ -1,0 +1,5 @@
+{
+    "search-online.search-engine": "Github",
+    "python.pythonPath": "/usr/bin/python3",
+    "python.formatting.provider": "autopep8",
+}
