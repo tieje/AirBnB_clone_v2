@@ -1,7 +1,9 @@
 '''DBStorage engine'''
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, scoped_session
+from os import getenv
+
 from models.base_model import BaseModel, Base
-from sqlalchemy.orm import sessionmaker
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -67,7 +69,7 @@ class DBStorage:
         Session = scoped_session(sessionmaker(
             bind=self.__engine, expire_on_commit=False))
         self.__session = Session()
-    
+
     def close(self):
         '''Close the session'''
         self.__session.close()
