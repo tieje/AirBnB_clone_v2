@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Defines the class `User`"""
 from sqlalchemy.sql.sqltypes import String
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 from sqlalchemy import Column
 
 
