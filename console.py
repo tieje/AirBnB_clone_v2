@@ -14,7 +14,7 @@ from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
-    """ Contains the functionality for the HBNB console"""
+    """Contains the functionality for the HBNB console"""
 
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
@@ -94,7 +94,7 @@ class HBNBCommand(cmd.Cmd):
         return stop
 
     def do_quit(self, command):
-        """ Method to exit the HBNB console"""
+        """Method to exit the HBNB console"""
         exit()
 
     def help_quit(self):
@@ -115,7 +115,7 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
+        """Create an object of any class"""
         p_args = hb.parseArgs(args)
         if not args:
             print("** class name missing **")
@@ -200,7 +200,7 @@ class HBNBCommand(cmd.Cmd):
         print("[Usage]: destroy <className> <objectId>\n")
 
     def do_all(self, args):
-        """ Shows all objects, or all objects of a class"""
+        """Shows all objects, or all objects of a class"""
         print_list = []
 
         if args:
