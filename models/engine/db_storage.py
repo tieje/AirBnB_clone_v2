@@ -43,7 +43,7 @@ class DBStorage:
         if cls:
             object_list = self.__session.query(cls).all()
         else:
-            for cs in classes:
+            for cs in DBStorage.classes:
                 object_list += self.__session.query(cs)
         for obj in object_list:
             key = "{}.{}".format(obj.__class__.__name__, str(obj.id))
