@@ -210,7 +210,6 @@ class HBNBCommand(cmd.Cmd):
                 return
             all_class_instances = storage.all(hb.classes[args])
             for k, v in all_class_instances.items():
-                if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
             for k, v in storage.all().items():
