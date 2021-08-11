@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """`Place` class definition."""
-from models import storage
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column
 from sqlalchemy.sql.schema import ForeignKey, Table
