@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """`State` class definition."""
 from models.base_model import BaseModel
-from sqlalchemy import Column, String, ForeignKey
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy import Column, String
+from sqlalchemy.orm import relationship
 from models.city import City
 
 
