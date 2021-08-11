@@ -16,14 +16,12 @@ class DBStorage:
     '''Database storage engine'''
     __engine = None
     __session = None
-    classes = [
-        State,
-        User,
-        City,
-        #Place,
-        #Amenity,
-        #Review
-    ]
+    class_dic = {'State': State,
+                 'City': City,
+                 'User': User,
+                 'Place': Place,
+                 'Review': Review,
+                 'Amenity': Amenity}
 
     def __init__(self):
         self.__engine = create_engine(
@@ -37,19 +35,19 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        '''Return all objects from database depending on class name'''
-        all_dict = {}
-        object_list = []
-        if cls:
-            object_list = self.__session.query(cls).all()
+        """All method queries databasse for all objects"""
+        dic = {}
+        objects = []
+        if cls is not None:
+            objects.extend(self.__session.query(
+                           self.class_dic[cls.__name__]).all())
         else:
-            for cs in self.classes:
-                print(cs)
-                object_list += self.__session.query(cs)
-        for obj in object_list:
-            key = "{}.{}".format(obj.__class__.__name__, str(obj.id))
-            all_dict[key] = obj
-        return all_dict
+            for clss in self.class_dic.values():
+                objects.extend(self.__session.query(clss).all())
+        for item in objects:
+            st = type(item).__name__ + '.' + item.id
+            dic.update({st: item})
+        return dic
 
     def new(self, obj):
         '''Add object to database session'''
