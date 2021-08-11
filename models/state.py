@@ -10,9 +10,10 @@ class State(BaseModel, Base):
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
     cities = relationship('City', cascade="all, delete", backref='state')
+
     @property
     def cities(self):
-        '''Returns the list of City instances with state_id'''
+        """Return the list of `City` instances with `state_id`."""
         from models import storage
         citiesOState = []
         for c in storage.all(City).values():
