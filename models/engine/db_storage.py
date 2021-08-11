@@ -19,10 +19,10 @@ class DBStorage:
     classes = [
         User,
         City,
-        Place,
         State,
-        Amenity,
-        Review
+        #Place,
+        #Amenity,
+        #Review
     ]
 
     def __init__(self):
