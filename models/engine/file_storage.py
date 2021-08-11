@@ -16,6 +16,9 @@ class FileStorage:
         for key, value in self.__objects.items():
             if isinstance(value, cls):
                 new_dict[key] = value
+        # Using dict comprehension
+        # {key: value for key, value in self.objects.items()
+        #  if isinstance(value, cls)}
         return new_dict
 
     def new(self, obj):
