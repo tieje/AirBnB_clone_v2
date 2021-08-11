@@ -210,10 +210,10 @@ class HBNBCommand(cmd.Cmd):
                 return
             all_class_instances = storage.all(hb.classes[args])
             for k, v in all_class_instances.items():
-                    print_list.append(str(v))
+                    print_list.append(v)
         else:
             for k, v in storage.all().items():
-                print_list.append(str(v))
+                print_list.append(v)
 
         print(str(print_list))
 
