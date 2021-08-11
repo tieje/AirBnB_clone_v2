@@ -16,14 +16,12 @@ class DBStorage:
     '''Database storage engine'''
     __engine = None
     __session = None
-    classes = [
-        User,
-        City,
-        State,
-        # Place,
-        # Amenity,
-        # Review
-    ]
+    class_dic = {'State': State,
+                 'City': City,
+                 'User': User,
+                 'Place': Place,
+                 'Review': Review,
+                 'Amenity': Amenity}
 
     def __init__(self):
         connection = 'mysql+mysqldb://{}:{}@{}/{}'
