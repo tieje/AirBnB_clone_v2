@@ -57,6 +57,7 @@ class DBStorage:
     def save(self):
         '''Commit changes to the current session'''
         print(self.__session.query(State).all())
+        print(getenv("HBNB_MYSQL_DB"))
         self.__session.commit()
 
     def delete(self, obj=None):
