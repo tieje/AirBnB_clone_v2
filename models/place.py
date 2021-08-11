@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 """`Place` class definition."""
+from operator import imod
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column
 from sqlalchemy.sql.schema import ForeignKey
 from sqlalchemy.sql.sqltypes import Float, Integer, String
+from sqlalchemy.orm import relationship
 
 
 class Place(BaseModel, Base):
@@ -19,4 +21,17 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, default=0, nullable=False)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
+    reviews = relationship("Review", backref="place", cascade="all")
     amenity_ids = []
+
+    @property
+    def reviews(self):
+        """
+        Return the list of `Review` instances with `place_id` == `self.id`.
+
+        """
+        from models import storage
+        from models.review import Review
+
+        return [review for review in storage.all(Review).values()
+                if review.place_id == self.id]
