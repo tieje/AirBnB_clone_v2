@@ -1,11 +1,21 @@
 #!/usr/bin/python3
 """`Place` class definition."""
-from operator import imod
+from models import storage
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column
-from sqlalchemy.sql.schema import ForeignKey
+from sqlalchemy.sql.schema import ForeignKey, Table
 from sqlalchemy.sql.sqltypes import Float, Integer, String
 from sqlalchemy.orm import relationship
+
+
+# Association table for Place-Amentity many-to-many relationship
+place_amenity = Table("place_amenity", Base.metadata,
+                      Column("place_id", String(60), ForeignKey('places.id'),
+                             primary_key=True, nullable=False),
+                      Column("amenity_id", String(60),
+                             ForeignKey("amenities.id"), primary_key=True,
+                             nullable=False)
+                      )
 
 
 class Place(BaseModel, Base):
@@ -22,6 +32,8 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     reviews = relationship("Review", backref="place", cascade="all")
+    amenities = relationship("Amenity", secondary=place_amenity,
+                             viewonly=False)
     amenity_ids = []
 
     @property
@@ -30,8 +42,20 @@ class Place(BaseModel, Base):
         Return the list of `Review` instances with `place_id` == `self.id`.
 
         """
-        from models import storage
         from models.review import Review
-
         return [review for review in storage.all(Review).values()
                 if review.place_id == self.id]
+
+    @property
+    def amenities(self):
+        """Return the list of `Amenity` instances linked to this place."""
+        from models.amenity import Amenity
+        return [amenity for amenity in storage.all(Amenity).values
+                if amenity.id in self.amenity_ids]
+
+    @amenities.setter
+    def amenities(self, amenity):
+        """Validate and handle additions to amenities at this place."""
+        from models.amenity import Amenity
+        if type(amenity) is Amenity:
+            self.amenity_ids.append(amenity.id)
