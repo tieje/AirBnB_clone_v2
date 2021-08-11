@@ -17,9 +17,9 @@ class DBStorage:
     __engine = None
     __session = None
     classes = [
+        State,
         User,
         City,
-        State,
         #Place,
         #Amenity,
         #Review
