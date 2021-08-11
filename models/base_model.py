@@ -1,5 +1,9 @@
 #!/usr/bin/python3
-"""This module defines a base class for all models in our hbnb clone"""
+"""
+Defines `BaseModel`, a base class for all models, and `Base`, the declarative
+base class from SQLAlchemy.
+
+"""
 import uuid
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
@@ -15,7 +19,7 @@ class BaseModel:
     updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
 
     def __init__(self, *args, **kwargs):
-        """Instatntiates a new model"""
+        """Instatntiate a new model."""
         if not kwargs:
             from models import storage
             self.id = str(uuid.uuid4())
@@ -30,19 +34,19 @@ class BaseModel:
             self.__dict__.update(kwargs)
 
     def __str__(self):
-        """Returns a string representation of the instance"""
+        """Return a string representation of the instance."""
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
         return '[{}] ({}) {}'.format(cls, self.id, self.to_dict())
 
     def save(self):
-        """Updates updated_at with current time when instance is changed"""
+        """Update `updated_at` with current time when instance is modified."""
         from models import storage
         self.updated_at = datetime.now()
         storage.new(self)
         storage.save()
 
     def to_dict(self):
-        """Convert instance into dict format"""
+        """Convert instance into dictionary format."""
         dictionary = {}
         dictionary.update(self.__dict__)
         dictionary.update({'__class__':
@@ -54,6 +58,6 @@ class BaseModel:
         return dictionary
 
     def delete(self):
-        '''Delete the current instance from storage'''
+        """Delete the current instance from storage."""
         from models import storage
         storage.delete(self)
