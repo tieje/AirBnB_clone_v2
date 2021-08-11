@@ -16,12 +16,14 @@ class DBStorage:
     '''Database storage engine'''
     __engine = None
     __session = None
-    class_dic = {'State': State,
-                 'City': City,
-                 'User': User,
-                 'Place': Place,
-                 'Review': Review,
-                 'Amenity': Amenity}
+    classes = [
+        User,
+        City,
+        State,
+        # Place,
+        # Amenity,
+        # Review
+    ]
 
     def __init__(self):
         self.__engine = create_engine(
@@ -32,22 +34,22 @@ class DBStorage:
                     getenv("HBNB_MYSQL_DB")),
             pool_pre_ping=True)
         if getenv('HBNB_ENV') == 'test':
-            Base.metadata.drop_all(self.__engine)
+            Base.metadata.drop_all(bind=self.__engine)
 
     def all(self, cls=None):
-        """All method queries databasse for all objects"""
-        dic = {}
-        objects = []
-        if cls is not None:
-            objects.extend(self.__session.query(
-                           self.class_dic[cls.__name__]).all())
+        '''Return all objects from database depending on class name'''
+        all_dict = {}
+        object_list = []
+        if cls:
+            object_list = self.__session.query(cls).all()
         else:
-            for clss in self.class_dic.values():
-                objects.extend(self.__session.query(clss).all())
-        for item in objects:
-            st = type(item).__name__ + '.' + item.id
-            dic.update({st: item})
-        return dic
+            for cs in DBStorage.classes:
+                print(cs)
+                object_list += self.__session.query(cs)
+        for obj in object_list:
+            key = "{}.{}".format(obj.__class__.__name__, str(obj.id))
+            all_dict[key] = obj
+        return all_dict
 
     def new(self, obj):
         '''Add object to database session'''
