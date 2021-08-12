@@ -8,6 +8,7 @@ import uuid
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, String, DateTime
+from sqlalchemy.sql.expression import update
 
 Base = declarative_base()
 
@@ -20,26 +21,25 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """Instatntiate a new model."""
-        if not kwargs:
-            self.id = str(uuid.uuid4())
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
-        else:
-            # Set each keyword argument as an instance attribute
-            for k, v in kwargs.items():
-                # Do not set `__class__`, since it is set automatically
-                if k == '__class__':
-                    continue
+        self.id = str(uuid.uuid4())
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
 
-                # Convert datetime strings to datetime objects
-                if k in ('updated_at', 'created_at'):
-                    k = datetime.strptime(k, '%Y-%m-%dT%H:%M:%S.%f')
+        # Set each keyword argument as an instance attribute
+        for k, v in kwargs.items():
+            # Do not set `__class__`, since it is set automatically
+            if k == '__class__':
+                continue
 
-                setattr(self, k, v)
+            # Convert datetime strings to datetime objects
+            if k in ('updated_at', 'created_at'):
+                v = datetime.strptime(v, '%Y-%m-%dT%H:%M:%S.%f')
+
+            setattr(self, k, v)
 
     def __str__(self):
         """Return a string representation of the instance."""
-        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
+        cls = __class__.__name__
         return '[{}] ({}) {}'.format(cls, self.id, self.to_dict())
 
     def save(self):
@@ -51,12 +51,21 @@ class BaseModel:
 
     def to_dict(self):
         """Convert instance into dictionary format."""
-        dictionary = {}
-        dictionary.update(self.__dict__)
-        dictionary.update({'__class__':
-                          (str(type(self)).split('.')[-1]).split('\'')[0]})
-        dictionary['created_at'] = self.created_at.isoformat()
-        dictionary['updated_at'] = self.updated_at.isoformat()
+        dictionary = self.__dict__
+        # Copy datetime objects to convert them to ISO strings
+        # because datetime.isoformat() mutates the datetime into a string
+        created_at = self.created_at
+        created_at.isoformat()
+        updated_at = self.updated_at
+        updated_at.isoformat()
+
+        dictionary.update(
+            {
+                '__class__': self.__class__.__name__,
+                'created_at': created_at,
+                'updated_at': updated_at
+            }
+        )
         if hasattr(self, '_sa_instance_state'):
             del dictionary['_sa_instance_state']
         return dictionary
