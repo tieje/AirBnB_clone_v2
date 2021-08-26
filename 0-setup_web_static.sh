@@ -1,28 +1,32 @@
 #!/usr/bin/env bash
-sudo apt-get -y update
-sudo apt-get -y install nginx
-mkdir -p /data/web_static/releases/
-mkdir -p /data/web_static/shared/
+# Setting up webservers
+apt-get update
+apt-get install -y nginx
+echo "Holberton School" > /data/web_static/releases/test/index.html
 mkdir -p /data/web_static/releases/test/
-touch /data/web_static/releases/test/index.html
-echo "<html>
-  <head>
-  </head>
-  <body>
-    Holberton School
-  </body>
-</html>
-ubuntu@89-web-01:~/$ curl localhost/hbnb_static/index.html
-<html>
-  <head>
-  </head>
-  <body>
-    Holberton School
-  </body>
-</html>" > /data/web_static/releases/test/index.html
-ln -sf /data/web_static/releases/test/ /data/web_static/current
-chown -R ubuntu:ubuntu /data/
-line='\\n\tlocation /hbnb_static {\n\t\t alias /data/web_static/current/;]\n\\t}'
-sed -i "37i $line" /etc/nginx/sites-available/default
+mkdir -p /data/web_static/shared/
+chown -R ubuntu /data/
+chgrp -R ubuntu /data/
 
+printf %s "server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    add_header X-Served-By $HOSTNAME;
+    root   /var/www/html;
+    index  index.html index.htm;
+    location /hbnb_static {
+        alias /data/web_static/current;
+        index index.html index.htm;
+    }
+    location /redirect_me {
+        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+    }
+    error_page 404 /404.html;
+    location /404 {
+      root /var/www/html;
+      internal;
+    }
+}" > /etc/nginx/sites-available/default
+
+ln -sf /data/web_static/releases/test/ /data/web_static/current
 service nginx restart
