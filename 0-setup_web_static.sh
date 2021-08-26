@@ -20,8 +20,9 @@ ubuntu@89-web-01:~/$ curl localhost/hbnb_static/index.html
     Holberton School
   </body>
 </html>" > /data/web_static/releases/test/index.html
-ln -sf /data/web_static/releases/test/ /data/web_static/current 
+ln -sf /data/web_static/releases/test/ /data/web_static/current
 chown -R ubuntu:ubuntu /data/
-
+line='\\n\tlocation /hbnb_static {\n\t\t alias /data/web_static/current/;]\n\\t}'
+sed -i "37i $line" /etc/nginx/sites-available/default
 
 service nginx restart
