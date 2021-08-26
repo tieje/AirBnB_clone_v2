@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
-# Setting up webservers
+# web servers
 apt-get update
 apt-get install -y nginx
-echo "Holberton School" > /data/web_static/releases/test/index.html
 mkdir -p /data/web_static/releases/test/
 mkdir -p /data/web_static/shared/
+echo "Holberton School" > /data/web_static/releases/test/index.html
+ln -sf /data/web_static/releases/test/ /data/web_static/current
 chown -R ubuntu /data/
 chgrp -R ubuntu /data/
 
@@ -28,5 +29,4 @@ printf %s "server {
     }
 }" > /etc/nginx/sites-available/default
 
-ln -sf /data/web_static/releases/test/ /data/web_static/current
 service nginx restart
