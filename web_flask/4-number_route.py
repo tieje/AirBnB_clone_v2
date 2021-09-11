@@ -30,16 +30,10 @@ def displayPythonText(text='is cool'):
     return 'Python {}'.format(display_text)
 
 
-@app.route('/number/<n>', strict_slashes=False)
+@app.route('/number/<int:n>', strict_slashes=False)
 def numberdisplay(n):
     '''Displays the number'''
-    try:
-        n = float(n)
-        k = int(n)
-        if k == n:
-            return '{} is a number'.format(k)
-    except:
-        return
+    return '{} is a number'.format(n)
 
 
 if __name__ == '__main__':
