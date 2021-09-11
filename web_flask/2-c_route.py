@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 '''An addition that returns just HBNB'''
 from typing import Text
-from flask import Flask, escape
+from flask import Flask
 app = Flask(__name__)
 
 
