@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 '''An addition that returns just HBNB'''
-from typing import Text
-from flask import Flask, escape
+from flask import Flask
 app = Flask(__name__)
 
 
@@ -17,17 +16,18 @@ def hbnb():
 
 
 @app.route('/c/<text>', strict_slashes=False)
-def displayText(text):
+def c(text):
     '''Displays the text variable'''
-    return f'C {escape(text)}'
+    text = text.replace("_", " ")
+    return 'C {}'.format(text)
 
 
 @app.route("/python", strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
 def displayPythonText(text='is cool'):
     '''Displays the text variable but with python'''
-    display_text = escape(text).replace('_', ' ')
-    return f'Python {display_text}'
+    display_text = text.replace('_', ' ')
+    return 'Python {}'.format(display_text)
 
 
 if __name__ == '__main__':
