@@ -35,6 +35,7 @@ def numberdisplay(n):
     '''Displays the number'''
     return '{} is a number'.format(n)
 
+
 @app.route('/number_template/<int:number>', strict_slashes=False)
 def displaytemplate(number):
     '''Displays a template'''
