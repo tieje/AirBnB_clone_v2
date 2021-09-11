@@ -34,9 +34,10 @@ def displayPythonText(text='is cool'):
 def numberdisplay(n):
     '''Displays the number'''
     try:
+        n = float(n)
         k = int(n)
         if k == n:
-            return '{} is a number'.format(n)
+            return '{} is a number'.format(k)
     except:
         return
 
