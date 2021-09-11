@@ -20,7 +20,7 @@ def hbnb():
 def displayText(text):
     '''Displays the text variable'''
     text = text.replace("_", " ")
-    return f'C {text}'
+    return 'C {}'.format(text)
 
 
 if __name__ == '__main__':
