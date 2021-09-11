@@ -19,7 +19,8 @@ def hbnb():
 @app.route('/c/<text>', strict_slashes=False)
 def displayText(text):
     '''Displays the text variable'''
-    return f'C {escape(text)}'
+    text = text.replace("_", " ")
+    return f'C {text}'
 
 
 if __name__ == '__main__':
