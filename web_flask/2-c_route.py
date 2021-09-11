@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 '''An addition that returns just HBNB'''
-from typing import Text
 from flask import Flask
 app = Flask(__name__)
 
@@ -17,7 +16,7 @@ def hbnb():
 
 
 @app.route('/c/<text>', strict_slashes=False)
-def displayText(text):
+def c(text):
     '''Displays the text variable'''
     text = text.replace("_", " ")
     return 'C {}'.format(text)
